@@ -24,6 +24,9 @@ backgroundImage.src = 'images/grass.jpg';
 let appleImage = new Image();
 appleImage.src = 'images/apple.png';
 
+let faceImage = new Image();
+faceImage.src = 'images/face.jpg';
+
 window.onload = function () {
     board = document.getElementById("board");
     board.height = total_row * blockSize;
@@ -32,18 +35,18 @@ window.onload = function () {
 
     placeFood();
     document.addEventListener("keyup", changeDirection);
-    setInterval(update, 1000 / 10);
+    setInterval(update, 120);
 }
-
 function update() {
     if (gameOver) {
         return;
     }
 
-    // Draw the grass image as the background
     context.drawImage(backgroundImage, 0, 0, board.width, board.height);
 
     context.drawImage(appleImage, foodX, foodY, blockSize, blockSize);
+
+    context.drawImage(faceImage, snakeX, snakeY, blockSize, blockSize);
 
     if (snakeX == foodX && snakeY == foodY) {
         snakeBody.push([foodX, foodY]);
@@ -59,12 +62,14 @@ function update() {
     }
 
     context.fillStyle = "white";
-    snakeX += speedX * blockSize;
-    snakeY += speedY * blockSize;
-    context.fillRect(snakeX, snakeY, blockSize, blockSize);
     for (let i = 0; i < snakeBody.length; i++) {
         context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
     }
+
+    snakeX += speedX * blockSize;
+    snakeY += speedY * blockSize;
+
+    context.drawImage(faceImage, snakeX, snakeY, blockSize, blockSize);
 
     if (snakeX < 0 || snakeX > total_col * blockSize || snakeY < 0 || snakeY > total_row * blockSize) {
         gameOver = true;
@@ -78,22 +83,34 @@ function update() {
         }
     }
 }
-
 function changeDirection(e) {
-    if (e.code == "ArrowUp" && speedY != 1) {
+    if (
+        (e.code == "ArrowUp" || e.key === "w") &&
+        speedY != 1
+    ) {
         speedX = 0;
         speedY = -1;
-    } else if (e.code == "ArrowDown" && speedY != -1) {
+    } else if (
+        (e.code == "ArrowDown" || e.key === "s") &&
+        speedY != -1
+    ) {
         speedX = 0;
         speedY = 1;
-    } else if (e.code == "ArrowLeft" && speedX != 1) {
+    } else if (
+        (e.code == "ArrowLeft" || e.key === "a") &&
+        speedX != 1
+    ) {
         speedX = -1;
         speedY = 0;
-    } else if (e.code == "ArrowRight" && speedX != -1) {
+    } else if (
+        (e.code == "ArrowRight" || e.key === "d") &&
+        speedX != -1
+    ) {
         speedX = 1;
         speedY = 0;
     }
 }
+
 
 function placeFood() {
     foodX = Math.floor(Math.random() * total_col) * blockSize;
