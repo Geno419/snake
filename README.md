@@ -7,7 +7,7 @@ Hey folks! 👋 Welcome to my snake game – a classic arcade game built with Ja
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/geno419/your-snake-game.git
+   git clone https://github.com/Geno419/snake.git
    ```
 
 2. Open `index.html` in your web browser.
